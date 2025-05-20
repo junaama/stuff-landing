@@ -22,6 +22,8 @@ function isValidEmail(email: string) {
 
 export function WaitlistForm() {
   const { toast } = useToast()
+
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -37,12 +39,54 @@ export function WaitlistForm() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  // const handlePhoneChange = (value: E164Number | undefined) => {
-  //   setFormData((prev) => ({ ...prev, phone: value || "" }))
-  // }
-
   const handleCheckboxChange = (checked: boolean) => {
     setFormData((prev) => ({ ...prev, consent: checked }))
+  }
+
+  const checkExistingUser = async (email: string, phoneNumber: E164Number) => {
+    const { data: emailData, error: emailError } = await supabase
+      .from('waitlist')
+      .select('id')
+      .eq('email', email)
+      .single()
+
+    if (emailError && emailError.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+      console.error('Error checking email:', emailError)
+      return true // Return true to prevent submission on error
+    }
+
+    if (emailData) {
+      // console.log("emai", emailData)
+      toast({
+        variant: "destructive",
+        title: "Already on waitlist",
+        description: "This email address is already on the waitlist.",
+      })
+      return true
+    }
+
+    const { data: phoneData, error: phoneError } = await supabase
+      .from('waitlist')
+      .select('id')
+      .eq('phone_number', phoneNumber)
+      .single()
+
+    if (phoneError && phoneError.code !== 'PGRST116') {
+      console.error('Error checking phone:', phoneError)
+      return true
+    }
+
+    if (phoneData) {
+      // console.log("phoen", phoneData)
+      toast({
+        variant: "destructive",
+        title: "Already on waitlist",
+        description: "This phone number is already on the waitlist.",
+      })
+      return true
+    }
+
+    return false
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,6 +95,7 @@ export function WaitlistForm() {
 
     // Validate email
     if (!isValidEmail(formData.email)) {
+      // console.log("defaemai", formData.email)
       toast({
         variant: "destructive",
         title: "Invalid email",
@@ -59,21 +104,35 @@ export function WaitlistForm() {
       setIsSubmitting(false)
       return
     }
-    console.log('formdata', formData, phone)
 
     if (!phone) {
+      // console.log("hopho", phone)
+      toast({
+        variant: "destructive",
+        title: "Phone number required",
+        description: "Please enter a valid phone number",
+      })
+      setIsSubmitting(false)
       return
     }
+
+    // Check if user already exists
+    const exists = await checkExistingUser(formData.email, phone)
+    if (exists) {
+      setIsSubmitting(false)
+      return
+    }
+
     setFormData((prev) => ({ ...prev, phoneNumber: phone }))
     try {
       const { data, error } = await supabase
         .from('waitlist')
         .insert([
-          { 
-            first_name: formData.firstName, 
-            last_name: formData.lastName, 
-            email: formData.email, 
-            phone_number: formData.phoneNumber
+          {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            phone_number: phone
           },
         ])
         .select()
@@ -95,11 +154,15 @@ export function WaitlistForm() {
         }
         return
       }
+      const { data: countData, count } = await supabase.from('waitlist').select('*', { count: 'exact', head: true })
 
-      toast({
-        title: "Success!",
-        description: `You've been added to the waitlist. Your position is ${data[0].id}`,
-      })
+      if (count) {
+        // console.log("cd", countData, count)
+        toast({
+          title: "Success!",
+          description: `You've been added to the waitlist. Your position is ${count}`,
+        })
+      }
 
       // Reset form
       setFormData({
@@ -109,6 +172,7 @@ export function WaitlistForm() {
         phoneNumber: "" as E164Number,
         consent: false,
       })
+      setPhone("" as E164Number)
     } catch (error) {
       console.error('Unexpected error:', error)
       toast({
