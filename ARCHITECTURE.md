@@ -141,6 +141,33 @@ A component that renders a single sticker at a specific position.
 
 ## Components
 
+### Toast System
+- **Location**: 
+  - `components/ui/toast.tsx` (Toast component)
+  - `components/ui/toaster.tsx` (Toaster provider)
+  - `components/ui/use-toast.ts` (Toast hook)
+- **Type**: Client Component
+- **Description**: A toast notification system for displaying temporary messages
+- **Features**:
+  - Multiple toast types (default, destructive)
+  - Customizable duration
+  - Accessible notifications
+  - Dark mode support
+  - Automatic stacking
+- **Usage**:
+  ```typescript
+  const { toast } = useToast()
+  toast({
+    title: "Title",
+    description: "Description",
+    variant: "default" | "destructive"
+  })
+  ```
+- **Dependencies**:
+  - Radix UI Toast primitive
+  - Tailwind CSS for styling
+  - next-themes for dark mode support
+
 ### WaitlistForm
 - **Location**: `components/waitlist-form.tsx`
 - **Type**: Client Component
@@ -152,6 +179,7 @@ A component that renders a single sticker at a specific position.
   - Privacy policy consent checkbox
   - Responsive design
   - Dark mode support with appropriate color schemes
+  - Pre-submit validation for existing users
 - **State Management**:
   - Uses React useState for form data and submission state
   - Form data includes: firstName, lastName, email, phone, consent
@@ -166,14 +194,17 @@ A component that renders a single sticker at a specific position.
   - Phone number validation through react-phone-number-input
   - Required field validation
   - Consent checkbox validation
+  - Pre-submit validation for existing email/phone
 - **Error Handling**:
   - Specific error messages for RLS errors (code 42501)
   - General error handling with user-friendly messages
   - Console logging for debugging
+  - Duplicate entry detection
 - **Database Integration**:
   - Inserts user data into Supabase 'waitlist' table
   - Requires RLS policies to be set up in Supabase
   - Returns user's position in waitlist on success
+  - Checks for existing email/phone before submission
 - **Styling**:
   - Dark mode compatible input fields with appropriate contrast
   - Dark mode compatible buttons with hover states
@@ -198,6 +229,42 @@ A component that renders a single sticker at a specific position.
   - Dark mode compatible headings and text
   - Dark mode compatible background colors
   - Consistent spacing and typography
+
+### StampCanvas
+- **Location**: `components/stamp-canvas.tsx`
+- **Type**: Client Component
+- **Description**: An interactive canvas for placing stickers with a custom cursor
+- **Features**:
+  - Custom cursor with sticker preview
+  - Click to place stickers
+  - Sticker cycling on placement
+  - Form element detection
+  - Mobile device detection and disabling
+  - Responsive design considerations
+- **State Management**:
+  - Cursor position tracking
+  - Placed stickers array
+  - Current sticker index
+  - Form hover state
+  - Cursor scale for animation
+  - Mobile device detection
+- **Mobile Detection**:
+  - User agent detection
+  - Screen size detection (max-width: 768px)
+  - Touch capability detection
+  - Responsive behavior
+  - Automatic disabling on mobile devices
+- **Dependencies**:
+  - SVG assets from stickers directory
+  - CursorSticker component
+- **Performance Optimizations**:
+  - Conditional event listeners
+  - Mobile-specific rendering
+  - Cleanup on unmount
+- **Accessibility**:
+  - Disabled on touch devices
+  - Form element interaction handling
+  - Proper cursor management
 
 ## Database Schema
 

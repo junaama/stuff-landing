@@ -37,11 +37,37 @@ export function StampCanvas() {
   const [currentStickerIndex, setCurrentStickerIndex] = useState(0)
   const [isOverForm, setIsOverForm] = useState(false)
   const [cursorScale, setCursorScale] = useState(1)
+  const [isMobile, setIsMobile] = useState(false)
 
   const stickerTypes = Object.keys(stickerAssets) as Array<keyof typeof stickerAssets>
   const currentStickerType = stickerTypes[currentStickerIndex]
 
   useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      const isMobileDevice =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.matchMedia("(max-width: 768px)").matches ||
+        'ontouchstart' in window
+      setIsMobile(isMobileDevice)
+    }
+
+    // Initial check
+    checkMobile()
+
+    // Add resize listener
+    window.addEventListener('resize', checkMobile)
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
+
+  useEffect(() => {
+    // Only add mouse move listener if not on mobile
+    if (isMobile) return
+
     const handleMouseMove = (e: MouseEvent) => {
       setCursorPosition({ x: e.clientX, y: e.clientY })
 
@@ -61,11 +87,11 @@ export function StampCanvas() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
     }
-  }, [])
+  }, [isMobile])
 
   const handleClick = (e: React.MouseEvent) => {
-    // Don't add stickers when clicking on form elements
-    if (isOverForm) return
+    // Don't add stickers on mobile or when clicking on form elements
+    if (isMobile || isOverForm) return
 
     // Add a new sticker at the click position
     setPlacedStickers([
@@ -85,13 +111,16 @@ export function StampCanvas() {
     setCurrentStickerIndex((currentStickerIndex + 1) % stickerTypes.length)
   }
 
+  // Don't render anything on mobile
+  if (isMobile) return null
+
   return (
     <div className={isOverForm ? "absolute inset-0" : "absolute inset-0 cursor-none"} onClick={handleClick}>
       {/* Render all placed stickers */}
       {placedStickers.map((sticker) => (
-        <CursorSticker 
-          key={sticker.id} 
-          position={{ x: sticker.x, y: sticker.y }} 
+        <CursorSticker
+          key={sticker.id}
+          position={{ x: sticker.x, y: sticker.y }}
           stickerType={sticker.stickerType}
         />
       ))}
@@ -99,20 +128,13 @@ export function StampCanvas() {
       {/* Custom cursor - only show when not over form elements */}
       {!isOverForm && (
         <div
-          // className="fixed z-50 pointer-events-none"
-          className="fixed z-50 pointer-events-none transition-transform duration-100"
-
+          className="fixed z-40 pointer-events-none transition-transform duration-100"
           style={{
             left: `${cursorPosition.x}px`,
             top: `${cursorPosition.y}px`,
-            // transform: "translate(-50%, -50%)",
-            transform: `translate(-50%, -50%) scale(${cursorScale})`,
-
           }}
         >
-          <img src={stickerAssets[currentStickerType].src} alt="sticker"  />
-
-
+          <img src={stickerAssets[currentStickerType].src} alt="sticker" />
         </div>
       )}
     </div>
