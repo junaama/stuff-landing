@@ -315,4 +315,17 @@ A component that renders a single sticker at a specific position.
 - Row Level Security (RLS) for database access
 - Environment variables for sensitive data
 - Client-side validation
-- Privacy policy consent requirement 
+- Privacy policy consent requirement
+
+## Font Configuration
+- **Primary Fonts**:
+  - Inter: Main sans-serif font for general text
+  - Horizons: Custom font for headings and emphasis (local font file)
+  - Newsreader: Serif font for specific content sections
+- **Font Loading**:
+  - All fonts use `display: "swap"` for optimal loading performance
+  - Horizons font is loaded locally from `/horizon-updated/new_version/horizon.otf`
+  - Font variables are applied through CSS variables:
+    - `--font-inter`
+    - `--font-horizons`
+    - `--font-newsreader` 

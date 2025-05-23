@@ -87,6 +87,9 @@
   font-family: var(--font-newsreader);
 }
 
+.font-horizons {
+  font-family: var(--font-horizons);
+}
 
 @keyframes sticker-bounce {
   0% {

@@ -10,7 +10,7 @@ export default function Home() {
 
       <Header />
       <div className="flex flex-col items-center justify-center w-full flex-1 max-w-xl py-12 z-10 gap-2">
-        <h1 className="text-5xl md:text-8xl font-extrabold font-fraunces text-center leading-none mb-4">
+        <h1 className="text-3xl md:text-5xl lg:text-7xl font-extrabold font-horizons text-center leading-none mb-4">
           getstuff.city
         </h1>
 

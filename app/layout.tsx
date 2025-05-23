@@ -1,7 +1,8 @@
 import type React from "react"
 import "./globals.css"
 import type { Metadata } from "next"
-import { Inter, Fraunces, Newsreader } from "next/font/google"
+import { Inter, Newsreader } from "next/font/google"
+import localFont from "next/font/local"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 
@@ -11,11 +12,10 @@ const inter = Inter({
   variable: "--font-inter",
 })
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
+const horizons = localFont({
+  src: "../horizon-updated/new_version/horizon.otf",
   display: "swap",
-  variable: "--font-fraunces",
-  weight: ["800", "900"],
+  variable: "--font-horizons",
 })
 
 const newsreader = Newsreader({
@@ -99,7 +99,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${fraunces.variable} ${newsreader.variable}`}>
+      <body className={`${inter.variable} ${horizons.variable} ${newsreader.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
           <Toaster />
