@@ -13,7 +13,7 @@ const inter = Inter({
 })
 
 const horizons = localFont({
-  src: "../horizon-updated/new_version/horizon.otf",
+  src: "./horizon.otf",
   display: "swap",
   variable: "--font-horizons",
 })
