@@ -5,6 +5,7 @@ import { Inter, Newsreader } from "next/font/google"
 import localFont from "next/font/local"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
+import { PostHogProvider } from "@/components/PostHogProvider"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -100,10 +101,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${horizons.variable} ${newsreader.variable}`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   )
