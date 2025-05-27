@@ -8,7 +8,7 @@ export default function Header() {
 
             </p>
             <p className="text-md md:text-lg font-light font-newsreader">
-                Connecting buyers and sellers to get sh*t sold.
+                Connecting buyers and sellers to get stuff sold.
             </p>
         </header>
     )

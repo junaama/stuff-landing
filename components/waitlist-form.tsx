@@ -187,7 +187,7 @@ export function WaitlistForm() {
 
   return (
     <div className="w-full max-w-md mx-auto px-8">
-      <h2 className="text-sm font-inter text-center mb-4 font-light text-stone-900 dark:text-stone-100">Join the waitlist</h2>
+      <h2 className="text-sm font-inter text-center mb-4 font-light text-stone-900 dark:text-stone-100">Be the first to try the newest marketplace!</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
