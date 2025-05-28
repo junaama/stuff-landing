@@ -17,7 +17,7 @@ export default function Home() {
         </h2>
 
         <h3 className="text-xl md:text-4xl font-newsreader text-center mb-8 leading-tight">
-          The marketplace built <span className="italic">for New York City</span>.
+          The Marketplace built <span className="italic">for New York City</span>.
         </h3>
 
         <WaitlistForm />
