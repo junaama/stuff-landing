@@ -10,6 +10,7 @@ import Link from "next/link"
 import { createClient } from '@supabase/supabase-js'
 import { useToast } from "@/components/ui/use-toast"
 import PhoneInput from 'react-phone-number-input/input'
+import { v4 as uuidv4 } from 'uuid'
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string)
@@ -132,10 +133,11 @@ export function WaitlistForm() {
             first_name: formData.firstName,
             last_name: formData.lastName,
             email: formData.email,
-            phone_number: phone
+            phone_number: phone,
+            claim_id: uuidv4()
           },
         ])
-        .select()
+        .select('claim_id')
 
       if (error) {
         console.error('Supabase error:', error)
@@ -157,10 +159,9 @@ export function WaitlistForm() {
       const { data: countData, count } = await supabase.from('waitlist').select('*', { count: 'exact', head: true })
 
       if (count) {
-        // console.log("cd", countData, count)
         toast({
           title: "Success!",
-          description: `You've been added to the waitlist. Your position is ${count}`,
+          description: `You've been added to the waitlist. Your position is ${count}. Claim your username here: /claim/${data[0].claim_id}`,
         })
       }
 
