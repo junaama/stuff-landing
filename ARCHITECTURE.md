@@ -17,6 +17,24 @@ A client-side page that displays the privacy policy.
 - Tailwind CSS
 - @tailwindcss/typography plugin
 
+### Claim Username Page (`app/claim/[id]/page.tsx`)
+A page for users to claim their username after joining the waitlist.
+
+#### Features
+- Displays a thank-you message to the user.
+- Provides an input field for the user to choose a username.
+- Shows the unique claim ID from the URL.
+- Uses dynamic routing based on the `claim_id`.
+
+#### Dependencies
+- React
+- Next.js dynamic routing (`params`)
+
+#### Styling
+- Responsive layout with a centered content area.
+- Dark mode support.
+- Uses Inter and Horizons fonts for consistent typography.
+
 ## Components
 
 ### WaitlistForm (`components/waitlist-form.tsx`)
