@@ -25,10 +25,16 @@ A page for users to claim their username after joining the waitlist.
 - Provides an input field for the user to choose a username.
 - Shows the unique claim ID from the URL.
 - Uses dynamic routing based on the `claim_id`.
+- Redirects to the home screen if the `claim_id` is invalid.
+- `handleClaim` function:
+  - Checks if a username is already claimed before allowing a new claim.
+  - Validates the `claim_id` against existing records in the `waitlist` table.
+  - Updates the `claimed_username` field in the `waitlist` table for the corresponding `claim_id`.
 
 #### Dependencies
 - React
 - Next.js dynamic routing (`params`)
+- Next.js `useRouter` for redirection
 
 #### Styling
 - Responsive layout with a centered content area.
@@ -346,4 +352,4 @@ A component that renders a single sticker at a specific position.
   - Font variables are applied through CSS variables:
     - `--font-inter`
     - `--font-horizons`
-    - `--font-newsreader` 
+    - `--font-newsreader`
