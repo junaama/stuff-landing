@@ -49,7 +49,7 @@ export default function PrivacyPage() {
                     <section className="mb-8">
                         <h2 className="text-2xl font-semibold mb-4 text-stone-900 dark:text-stone-100">Contact Us</h2>
                         <p className="text-stone-700 dark:text-stone-300">
-                            If you have any questions about this Privacy Policy, please contact us at support@getstuff.nyc
+                            If you have any questions about this Privacy Policy, please contact us at hello@getstuff.nyc
                         </p>
                     </section>
                 </article>
