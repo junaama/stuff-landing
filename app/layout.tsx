@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import { Inter, Newsreader } from "next/font/google"
 import localFont from "next/font/local"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/sonner"
 import { PostHogProvider } from "@/components/PostHogProvider"
 
 const inter = Inter({

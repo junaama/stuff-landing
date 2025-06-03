@@ -8,10 +8,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { createClient } from '@supabase/supabase-js'
-import { useToast } from "@/components/ui/use-toast"
 import PhoneInput from 'react-phone-number-input/input'
 import { v4 as uuidv4 } from 'uuid'
-
+import { toast } from "sonner"
 // Create a single supabase client for interacting with your database
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string)
 
@@ -22,8 +21,6 @@ function isValidEmail(email: string) {
 }
 
 export function WaitlistForm() {
-  const { toast } = useToast()
-
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -57,12 +54,7 @@ export function WaitlistForm() {
     }
 
     if (emailData) {
-      // console.log("emai", emailData)
-      toast({
-        variant: "destructive",
-        title: "Already on waitlist",
-        description: "This email address is already on the waitlist.",
-      })
+      toast.error("This email address is already on the waitlist.")
       return true
     }
 
@@ -78,41 +70,33 @@ export function WaitlistForm() {
     }
 
     if (phoneData) {
-      // console.log("phoen", phoneData)
-      toast({
-        variant: "destructive",
-        title: "Already on waitlist",
-        description: "This phone number is already on the waitlist.",
-      })
+      toast.error("This phone number is already on the waitlist.")
       return true
     }
 
     return false
   }
 
+const sendEmail = async (email: string, claimId: string, firstName: string) => {
+  const response = await fetch('/api/email', {
+    method: 'POST',
+    body: JSON.stringify({ email, claimId, firstName }),
+  })
+  return response.json()
+}
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     // Validate email
     if (!isValidEmail(formData.email)) {
-      // console.log("defaemai", formData.email)
-      toast({
-        variant: "destructive",
-        title: "Invalid email",
-        description: "Please enter a valid email address",
-      })
+      toast.error("Please enter a valid email address")
       setIsSubmitting(false)
       return
     }
 
     if (!phone) {
-      // console.log("hopho", phone)
-      toast({
-        variant: "destructive",
-        title: "Phone number required",
-        description: "Please enter a valid phone number",
-      })
+      toast.error("Please enter a valid phone number")
       setIsSubmitting(false)
       return
     }
@@ -142,29 +126,14 @@ export function WaitlistForm() {
       if (error) {
         console.error('Supabase error:', error)
         if (error.code === '42501') {
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: "We're having trouble adding you to the waitlist. Please try again later or contact support.",
-          })
+          toast.error("We're having trouble adding you to the waitlist. Please try again later or contact support.")
         } else {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "We're having trouble adding you to the waitlist. Please try again later",
-          })
+          toast.error("We're having trouble adding you to the waitlist. Please try again later")
         }
         return
       }
-      const { data: countData, count } = await supabase.from('waitlist').select('*', { count: 'exact', head: true })
-
-      if (count) {
-        toast({
-          title: "Success!",
-          description: `You've been added to the waitlist. Your position is ${count}. Claim your username here: /claim/${data[0].claim_id}`,
-        })
-      }
-
+      // send email to user
+      // await sendEmail(formData.email, data[0].claim_id, formData.firstName)
       // Reset form
       setFormData({
         firstName: "",
@@ -176,13 +145,10 @@ export function WaitlistForm() {
       setPhone("" as E164Number)
     } catch (error) {
       console.error('Unexpected error:', error)
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "We're having trouble adding you to the waitlist. Please try again later",
-      })
+      toast.error("We're having trouble adding you to the waitlist. Please try again later")
     } finally {
       setIsSubmitting(false)
+      toast.success("You've been added to the waitlist!")
     }
   }
 
