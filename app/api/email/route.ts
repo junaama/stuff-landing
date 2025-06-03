@@ -14,5 +14,5 @@ export async function POST(request: Request) {
             'List-Unsubscribe': '<https://getstuff.com/unsubscribe>',
         },
     });
-
+    return Response.json({ message: 'Email sent' });
 }
