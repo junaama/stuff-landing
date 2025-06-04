@@ -57,10 +57,14 @@ export default function WaitlistConfirmationEmail({
 
                     <Text style={{ fontSize: '18px' }}>
                         We&apos;re two women founders that connected instantly on a greater vision of building a hyperlocal marketplace that is safer, easier, and connects people.
-                        <Text style={{ fontSize: '18px' }}>
-                            As lovers of secondhand and vintage, we think it&apos;s only right to allow people to find the stuff they want when they want it, without unnecessary shipping fees and ever asking <span className="italic">&quot;Is this still available?&quot;</span> ever again.
-                            <br />
-                        </Text>
+                    </Text>
+                    <Section style={{ textAlign: 'center', margin: '32px 0' }}>
+                        <Img src="https://getstuff.city/founders.gif" alt="Stuff Logo" width="400" style={{ margin: '0 auto' }} />
+                    </Section>
+                    <Text style={{ fontSize: '18px' }}>
+                        As lovers of secondhand and vintage, we think it&apos;s only right to allow people to find the stuff they want when they want it, without unnecessary shipping fees and ever asking <span className="italic">&quot;Is this still available?&quot;</span> ever again.
+                        <br />
+
                     </Text>
                     <Text style={{ fontSize: '18px' }}>
                         In the meantime, stay connected with us on our journey through <Link href="https://www.tiktok.com/@getstuff.city">TikTok</Link> and <Link href="https://www.instagram.com/getstuff.city">Instagram</Link>.

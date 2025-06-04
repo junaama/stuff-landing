@@ -53,7 +53,8 @@ A client-side page that allows users to unsubscribe from email updates.
 
 #### Dependencies
 - `next/navigation` (`useSearchParams`)
-- `react` (`useState`)
+- `react` (`useState`, `Suspense`)
+- `sonner` (`toast`)
 - Fetch API for API calls
 
 #### Styling
@@ -121,7 +122,7 @@ type Sticker = {
 - Tracks mouse position and updates cursor sticker
 - Places stickers on click
 - Shows sticker0 on first click only
-- Cycles through other stickers (sticker1-sticker8) after first click
+- Cycles through other stickers (sticker1-8) after first click
 - Animates cursor scale on click
 - Disables sticker placement over form elements
 - Uses SVG stickers as custom cursor and placed elements
@@ -392,3 +393,22 @@ A Next.js API route to handle unsubscription requests.
 #### Error Handling
 - Logs Supabase errors and server errors.
 - Provides descriptive error messages to the client.
+
+### UnsubscribeContent (`app/unsubscribe/unsubscribe-content.tsx`)
+A client-side component that handles the core logic for unsubscribing from email updates.
+
+#### Features
+- Extracts `claimId` from URL parameters using `useSearchParams`.
+- Manages loading state during the unsubscribe process.
+- Initiates a `POST` request to `/api/unsubscribe`.
+- Displays success or error toast messages based on API response.
+- Renders the confirmation message and unsubscribe button.
+
+#### Dependencies
+- `next/navigation` (`useSearchParams`)
+- `react` (`useState`)
+- `sonner` (`toast`)
+- Fetch API for API calls
+
+#### Styling
+- Uses Tailwind CSS for layout and styling.
