@@ -87,7 +87,6 @@ export default function ClaimPage({ params }: ClaimPageProps) {
             placeholder="Choose your username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-
             className="w-full px-4 py-2 text-md font-inter rounded-[24px] border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 placeholder-stone-500 dark:placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-200 dark:focus:ring-stone-700"
           />
           <button

@@ -133,7 +133,7 @@ const sendEmail = async (email: string, claimId: string, firstName: string) => {
         return
       }
       // send email to user
-      // await sendEmail(formData.email, data[0].claim_id, formData.firstName)
+      await sendEmail(formData.email, data[0].claim_id, formData.firstName)
       // Reset form
       setFormData({
         firstName: "",

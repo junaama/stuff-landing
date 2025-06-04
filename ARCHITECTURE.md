@@ -41,6 +41,25 @@ A page for users to claim their username after joining the waitlist.
 - Dark mode support.
 - Uses Inter and Horizons fonts for consistent typography.
 
+### Unsubscribe Page (`app/unsubscribe/page.tsx`)
+A client-side page that allows users to unsubscribe from email updates.
+
+#### Features
+- Extracts `claimId` from URL parameters.
+- Displays a confirmation message and an unsubscribe button.
+- Handles unsubscribe action by making a `POST` request to `/api/unsubscribe`.
+- Shows loading state and success/error messages.
+- Handles cases for invalid `claimId`.
+
+#### Dependencies
+- `next/navigation` (`useSearchParams`)
+- `react` (`useState`)
+- Fetch API for API calls
+
+#### Styling
+- Centered layout with a clear call to action.
+- Responsive design using Tailwind CSS.
+
 ## Components
 
 ### WaitlistForm (`components/waitlist-form.tsx`)
@@ -353,3 +372,23 @@ A component that renders a single sticker at a specific position.
     - `--font-inter`
     - `--font-horizons`
     - `--font-newsreader`
+
+## API Routes
+
+### Unsubscribe API (`app/api/unsubscribe/route.ts`)
+A Next.js API route to handle unsubscription requests.
+
+#### Features
+- Accepts `POST` requests with a `claimId`.
+- Validates the presence of `claimId`.
+- Connects to Supabase using environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+- Updates the `opted_out` column to `true` in the `waitlist` table for the given `claim_id`.
+- Returns appropriate JSON responses for success (200), bad request (400), not found (404), and server errors (500).
+
+#### Dependencies
+- `@supabase/supabase-js`
+- `next/server` (`NextResponse`)
+
+#### Error Handling
+- Logs Supabase errors and server errors.
+- Provides descriptive error messages to the client.
