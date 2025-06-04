@@ -1,7 +1,7 @@
 'use client';
 
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useState, Suspense } from 'react';
 import { toast } from 'sonner';
 
 export default function UnsubscribePage() {
