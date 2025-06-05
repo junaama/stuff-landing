@@ -11,6 +11,7 @@ import { createClient } from '@supabase/supabase-js'
 import PhoneInput from 'react-phone-number-input/input'
 import { v4 as uuidv4 } from 'uuid'
 import { toast } from "sonner"
+import { Link as LinkIcon } from 'lucide-react'
 // Create a single supabase client for interacting with your database
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string)
 
@@ -217,9 +218,14 @@ export function WaitlistForm({ ref }: { ref?: string }) {
           disabled={isSubmitting}
           className="w-full py-4 bg-stone-100 dark:bg-stone-800 text-sm font-inter font-light rounded-[16px] text-stone-900 dark:text-stone-100 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? "Submitting..." : "Submit"}
+          {isSubmitting ? "Submitting..." : "Join the waitlist"}
         </button>
       </form>
+      <div className="text-md md:text-lg font-newsreader font-light flex mt-6 -mb-6 justify-center text-center">
+        <LinkIcon width={14} />
+        <a href="https://form.typeform.com/to/lT2ms1VT" target="_blank" className="px-2 hover:underline">Sign up as an early seller! </a>
+
+      </div>
     </div>
   )
 }
