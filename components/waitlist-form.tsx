@@ -20,7 +20,7 @@ function isValidEmail(email: string) {
   return emailRegex.test(email);
 }
 
-export function WaitlistForm() {
+export function WaitlistForm(ref: string) {
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -77,13 +77,13 @@ export function WaitlistForm() {
     return false
   }
 
-const sendEmail = async (email: string, claimId: string, firstName: string) => {
-  const response = await fetch('/api/email', {
-    method: 'POST',
-    body: JSON.stringify({ email, claimId, firstName }),
-  })
-  return response.json()
-}
+  const sendEmail = async (email: string, claimId: string, firstName: string) => {
+    const response = await fetch('/api/email', {
+      method: 'POST',
+      body: JSON.stringify({ email, claimId, firstName }),
+    })
+    return response.json()
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -118,7 +118,8 @@ const sendEmail = async (email: string, claimId: string, firstName: string) => {
             last_name: formData.lastName,
             email: formData.email,
             phone_number: phone,
-            claim_id: uuidv4()
+            claim_id: uuidv4(),
+            referred_by: ref
           },
         ])
         .select('claim_id')

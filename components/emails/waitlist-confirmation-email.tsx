@@ -27,7 +27,7 @@ export default function WaitlistConfirmationEmail({
         <Html>
             <Head />
             <Preview>You're on the Stuff waitlist 🎉</Preview>
-            <Body style={{ fontFamily: 'Newsreader, serif', backgroundColor: '#ffffff', textAlign: 'center' }}>
+            <Body style={{ fontFamily: 'Newsreader, serif', textAlign: 'center' }}>
                 <Container style={{ padding: '24px 0 36px 0', margin: '0 auto' }}>
                     <Section style={{ textAlign: 'center', margin: '32px 0' }}>
                         <Img src="https://getstuff.city/stuffmkrt.png" alt="Stuff Logo" width="400" style={{ margin: '0 auto' }} />

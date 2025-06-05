@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import React, { useState, use, useEffect } from 'react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { v4 as uuidv4 } from 'uuid';
 
 interface ClaimPageProps {
   params: Promise<{ id: string }>
@@ -31,6 +32,7 @@ export default function ClaimPage({ params }: ClaimPageProps) {
     }
     checkExistingClaim()
   }, [id, router])
+
   const handleClaim = async () => {
     // check if claim_id is valid
     const { data: existingClaim, error: existingClaimError } = await supabase.from('waitlist').select('*').eq('claim_id', id).single()
@@ -54,6 +56,7 @@ export default function ClaimPage({ params }: ClaimPageProps) {
     // update waitlist row where claim_id = id with claimed_username = username
     const { data, error } = await supabase.from('waitlist').update({
       claimed_username: username,
+      referral_id: uuidv4()
     }).eq('claim_id', id).select()
 
     if (error) {
@@ -63,17 +66,12 @@ export default function ClaimPage({ params }: ClaimPageProps) {
     }
     setUsername('')
     toast.success(`You've claimed ${username}!`)
+    router.push(`/referral/${data[0].referral_id}`)
   }
 
   if (existingClaim && existingClaim.claimed_username) {
-    return (
+    router.push(`/referral/${existingClaim.referral_id}`)
 
-      <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-white dark:bg-stone-950 text-stone-900 dark:text-stone-100">
-        <h1 className="text-3xl font-bold mb-4 font-horizons text-center">Thanks for supporting Stuff!</h1>
-        <p className="text-lg mb-8 font-inter">We'll let you know when the product is ready.</p>
-
-      </div>
-    )
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-white dark:bg-stone-950 text-stone-900 dark:text-stone-100">
