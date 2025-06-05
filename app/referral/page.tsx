@@ -9,10 +9,6 @@ export default function JoinReferralPage() {
     const searchParams = useSearchParams();
     const referralId = searchParams.get('ref');
     return (
-        <main className="flex min-h-screen flex-col items-center relative overflow-hidden bg-white dark:bg-stone-900">
-            <Header />
-        <Suspense fallback={<div>Loading...</div>}>
-
         <div className="flex flex-col items-center justify-center w-full flex-1 max-w-2xl py-12 z-10 gap-2">
             <h1 className="text-3xl md:text-5xl lg:text-7xl font-extrabold font-horizons text-center leading-none mb-4">
                 Stuff
@@ -25,11 +21,9 @@ export default function JoinReferralPage() {
                 The Marketplace built <span className="italic">for New York City</span>.
             </h3>
 
-            <WaitlistForm ref={referralId}/>
+            <WaitlistForm ref={referralId || ''} />
         </div>
-</Suspense>
-<Footer/>
-</main>
+
 
     )
 }

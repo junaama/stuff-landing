@@ -103,7 +103,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${horizons.variable} ${newsreader.variable}`}>
         <PostHogProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-            {children}
+              {children}
             <Toaster />
           </ThemeProvider>
         </PostHogProvider>

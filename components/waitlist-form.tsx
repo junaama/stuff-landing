@@ -20,7 +20,7 @@ function isValidEmail(email: string) {
   return emailRegex.test(email);
 }
 
-export function WaitlistForm(ref: string) {
+export function WaitlistForm({ ref }: { ref?: string }) {
 
   const [formData, setFormData] = useState({
     firstName: "",
