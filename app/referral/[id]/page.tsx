@@ -36,7 +36,7 @@ export default function ReferralPage({ params }: ReferralPageProps) {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-white dark:bg-stone-950 text-stone-900 dark:text-stone-100">
             <h1 className="text-3xl font-bold mb-4 font-horizons text-center">Thanks for supporting Stuff!</h1>
-            <p className="text-lg mb-8 font-inter">Get a friend on the waitlist with your unique referral link.</p>
+            <p className="text-lg mb-8 font-light text-center font-inter">Get a friend on the waitlist with your unique referral link.</p>
 
             <Button onClick={handleClick} className="bg-blue-500"> Share referral link</Button>
             <Button className="underline mt-2" variant="link" onClick={copyLink}>Copy link</Button>
