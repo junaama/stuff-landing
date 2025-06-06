@@ -1,6 +1,8 @@
 import { Resend } from 'resend';
+
 import WaitlistConfirmationEmail from '@/components/emails/waitlist-confirmation-email';
-const resend = new Resend('re_PCCcrxjR_83mrw9ukyqvbHygQTXA79Bcx');
+
+const resend = new Resend(process.env.RESEND_KEY);
 
 export async function POST(request: Request) {
     const { email, claimId, firstName } = await request.json();
