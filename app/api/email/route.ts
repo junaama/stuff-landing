@@ -6,15 +6,22 @@ const resend = new Resend(process.env.RESEND_KEY);
 
 export async function POST(request: Request) {
     const { email, claimId, firstName } = await request.json();
+    try {
+        const { data, error } = await resend.emails.send({
+            from: 'STUFF <hello@getstuff.city>',
+            to: email,
+            subject: "You're on the list!",
+            react: WaitlistConfirmationEmail({ firstName, claimId }),
+            headers: {
+                'List-Unsubscribe': '<https://getstuff.com/unsubscribe>',
+            },
+        });
 
-    resend.emails.send({
-        from: 'STUFF <hello@getstuff.city>',
-        to: email,
-        subject: "You're on the list!",
-        react: WaitlistConfirmationEmail({ firstName, claimId }),
-        headers: {
-            'List-Unsubscribe': '<https://getstuff.com/unsubscribe>',
-        },
-    });
-    return Response.json({ message: 'Email sent' });
+        if (error) {
+            return Response.json({ error }, { status: 500 });
+        }
+        return Response.json(data);
+    } catch (error) {
+        return Response.json({ error }, { status: 500 });
+    }
 }
