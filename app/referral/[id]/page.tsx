@@ -8,8 +8,8 @@ interface ReferralPageProps {
 export default function ReferralPage({ params }: ReferralPageProps) {
     const { id } = use(params)
     const shareData = {
-        title: "Stuff Marketplace",
-        text: "Get early access to Stuff marketplace",
+        title: "Hey there's a new secondhand marketplace called STUFF that's coming soon 👀",
+        text: "Join me and get early access!",
         url: `https://getstuff.city/referral?ref=${id}`,
     };
 
