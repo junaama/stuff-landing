@@ -41,6 +41,25 @@ A page for users to claim their username after joining the waitlist.
 - Dark mode support.
 - Uses Inter and Horizons fonts for consistent typography.
 
+### Referral Page (`app/referral/[id]/page.tsx`)
+A client-side page for users to share their unique referral links.
+
+#### Features
+- Displays a unique referral ID from the URL.
+- Allows users to share a referral link via the Web Share API or copy it to the clipboard.
+- Provides a visual feedback (toast notification) for link copying.
+- Displays a "hotstuff" video after the referral link is successfully shared or copied.
+
+#### Dependencies
+- `react` (`use`, `useState`)
+- `sonner` (`toast`)
+- Next.js dynamic routing (`params`)
+
+#### Styling
+- Centered layout with responsive design.
+- Dark mode support.
+- Uses Inter and Horizons fonts.
+
 ### Unsubscribe Page (`app/unsubscribe/page.tsx`)
 A client-side page that allows users to unsubscribe from email updates.
 
@@ -398,17 +417,4 @@ A Next.js API route to handle unsubscription requests.
 A client-side component that handles the core logic for unsubscribing from email updates.
 
 #### Features
-- Extracts `claimId` from URL parameters using `useSearchParams`.
-- Manages loading state during the unsubscribe process.
-- Initiates a `POST` request to `/api/unsubscribe`.
-- Displays success or error toast messages based on API response.
-- Renders the confirmation message and unsubscribe button.
-
-#### Dependencies
-- `next/navigation` (`useSearchParams`)
-- `react` (`useState`)
-- `sonner` (`toast`)
-- Fetch API for API calls
-
-#### Styling
-- Uses Tailwind CSS for layout and styling.
+- Extracts `claimId`
