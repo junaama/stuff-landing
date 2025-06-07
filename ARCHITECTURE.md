@@ -418,3 +418,20 @@ A client-side component that handles the core logic for unsubscribing from email
 
 #### Features
 - Extracts `claimId`
+
+### Email API (`app/api/email/route.ts`)
+A server-side API route for sending waitlist confirmation emails.
+
+#### Features
+- Accepts `POST` requests with `email`, `claimId`, and `firstName`.
+- Sends an HTML email using `WaitlistConfirmationEmail` component.
+- Includes a plaintext version of the email for better compatibility and accessibility.
+- Handles email sending using the Resend service.
+- Returns success or error responses in JSON format.
+
+#### Dependencies
+- `resend` library for email sending.
+- `WaitlistConfirmationEmail` component for HTML email content.
+
+#### Environment Variables
+- `process.env.RESEND_KEY`: API key for the Resend service.
