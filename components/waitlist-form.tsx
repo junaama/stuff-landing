@@ -216,7 +216,11 @@ export function WaitlistForm({ ref }: { ref?: string }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-4 bg-stone-100 dark:bg-stone-800 text-sm font-inter font-light rounded-[16px] text-stone-900 dark:text-stone-100 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className={`w-full py-4 text-sm font-inter font-light rounded-[16px] text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+            formData.firstName && formData.lastName && formData.email && phone && formData.consent
+              ? 'bg-blue-500 hover:bg-blue-600'
+              : 'bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-100 hover:bg-stone-200 dark:hover:bg-stone-700'
+          }`}
         >
           {isSubmitting ? "Submitting..." : "Join the waitlist"}
         </button>
