@@ -27,7 +27,7 @@ const newsreader = Newsreader({
 
 export const metadata: Metadata = {
   title: "getstuff.city - The marketplace built for New York",
-  description: "Join the waitlist for getstuff.city - Connecting buyers and sellers to get sh*t sold.",
+  description: "Join the waitlist for getstuff.city - Connecting buyers and sellers to get stuff sold.",
   keywords: [
     "marketplace",
     "New York",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://getstuff.city",
     title: "getstuff.city - The marketplace built for New York",
-    description: "Join the waitlist for getstuff.city - Connecting buyers and sellers to get sh*t sold.",
+    description: "Join the waitlist for getstuff.city - Connecting buyers and sellers to get stuff sold.",
     siteName: "getstuff.city",
     images: [
       {
