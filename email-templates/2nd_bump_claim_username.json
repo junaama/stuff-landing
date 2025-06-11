@@ -1,0 +1,36 @@
+{
+  "subject": "Claim your username",
+  "imageUrl": "",
+  "components": [
+    {
+      "id": 1749663195955,
+      "type": "text",
+      "content": "Hi {name},\n\nThanks for being an early supporter of STUFF! It truly takes a community to build a smarter, safer, and more human marketplace experience. \n\nWanted to bump here and let you know that you can claim your username first! :-)",
+      "link": "https://"
+    },
+    {
+      "id": 1749663205791,
+      "type": "button",
+      "content": "Claim Username",
+      "preset": "claim"
+    },
+    {
+      "id": 1749663213959,
+      "type": "text",
+      "content": "Whether you’re here to buy, sell, or browse cool stuff, or give stuff away, we can’t build this without people like you. Help us help you! \n\nIf you know someone who would dig STUFF— whether it is a local artist, your secondhand fashionista friend, or a buy nothing enthusiast, here’s your unique referral link: ",
+      "link": "https://"
+    },
+    {
+      "id": 1749669010311,
+      "type": "link",
+      "content": "Get Your Referral Link",
+      "preset": "referral"
+    },
+    {
+      "id": 1749669011289,
+      "type": "image",
+      "content": "N/A",
+      "link": "N/A"
+    }
+  ]
+}
