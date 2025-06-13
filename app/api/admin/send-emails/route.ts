@@ -99,8 +99,11 @@ export async function POST(request: Request) {
     const userList = sendTestUser ? tempUsers : users;
     const totalUsers = userList.length;
 
-    for (let i = 0; i < totalUsers; i++) {
-      const user = userList[i];
+    // Prepare batch of emails
+    const emailBatch = userList.map(user => {
+      if(!user.referral_id){
+        console.log('no referral id')
+      }
       // For each user, process the component definitions to create the final component list
       const processedComponents = (components as ComponentDefinition[])
         .map(comp => {
@@ -111,7 +114,6 @@ export async function POST(request: Request) {
             if (comp.preset === 'referral' && user.referral_id) {
               return { ...comp, link: `https://getstuff.city/referral?ref=${user.referral_id}` };
             }
-            // If the preset can't be fulfilled (e.g., no claim_id), return null to filter it out
             return null;
           }
           if (comp.type === 'link') {
@@ -119,7 +121,7 @@ export async function POST(request: Request) {
           }
           return comp;
         })
-        .filter(Boolean) // Remove any null components
+        .filter(Boolean)
         .map(comp => {
           if (comp!.type === 'text') {
             const personalizedContent = comp!.content.replace(/{name}/g, user.first_name || 'there');
@@ -128,27 +130,33 @@ export async function POST(request: Request) {
           return comp;
         });
 
-      await resend.emails.send({
+      return {
         from: 'STUFF <hello@getstuff.city>',
         to: user.email,
         subject: subject,
-        react: AdminBroadcastEmail(
-          {
-            subject,
-            previewText: subject,
-            processedComponents: processedComponents as any,
-            imageUrl
-          }
-        )
-      });
+        react: AdminBroadcastEmail({
+          subject,
+          previewText: subject,
+          processedComponents: processedComponents as any,
+          imageUrl
+        })
+      };
+    }); 
+    // console.log("emailBatch", totalUsers, emailBatch)
+    // Send all emails in batch
+    const { data, error: batchError } = await resend.batch.send(emailBatch);
 
-      // Add a 30-second delay between emails, but not after the last one.
-      if (i < totalUsers - 1) {
-        await delay(30000);
-      }
+    if (batchError) {
+      throw new Error(`Failed to send batch emails: ${batchError.message}`);
     }
 
-    return NextResponse.json({ message: `Successfully sent emails to ${userList.length} users.` });
+    return NextResponse.json({ 
+      message: `Successfully sent emails to ${userList.length} users.`,
+      data: {
+        totalSent: userList.length,
+        batchData: data
+      }
+    });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json({ message: 'Failed to send emails.', error: error.message }, { status: 500 });

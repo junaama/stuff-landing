@@ -217,6 +217,7 @@ export default function AdminForm() {
                   style={{ width: '100%', padding: '8px' }}
                 >
                   <option value="any">Any time</option>
+                  <option value="1">More than 1 day ago</option>
                   <option value="3">More than 3 days ago</option>
                   <option value="7">More than 7 days ago</option>
                   <option value="30">More than 30 days ago</option>
