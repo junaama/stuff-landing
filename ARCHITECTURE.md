@@ -435,3 +435,40 @@ A server-side API route for sending waitlist confirmation emails.
 
 #### Environment Variables
 - `process.env.RESEND_KEY`: API key for the Resend service.
+
+## API Endpoints
+
+### Admin Email Broadcast (`app/api/admin/send-emails/route.ts`)
+A server-side API endpoint for sending broadcast emails to waitlist users.
+
+#### Features
+- Admin authentication check using iron-session
+- Batch email sending using Resend's batch API
+- Support for personalized content with user's first name
+- Dynamic component processing for buttons and links
+- Time-based filtering of recipients
+- Target group filtering (claimed usernames, unclaimed usernames, non-referrers)
+
+#### Dependencies
+- @supabase/supabase-js for database operations
+- resend for email delivery
+- iron-session for admin authentication
+- next/server for API response handling
+
+#### Types
+```typescript
+type ComponentDefinition = {
+  id: number;
+  type: 'text' | 'button' | 'image' | 'link';
+  content: string;
+  link?: string;
+  preset?: 'claim' | 'referral';
+};
+```
+
+#### Functionality
+- Validates admin session
+- Processes email components with personalization
+- Handles dynamic link generation for claim and referral buttons
+- Supports batch email sending for improved performance
+- Returns success/error responses with appropriate status codes
