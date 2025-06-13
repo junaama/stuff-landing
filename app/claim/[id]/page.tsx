@@ -56,7 +56,7 @@ export default function ClaimPage({ params }: ClaimPageProps) {
     // update waitlist row where claim_id = id with claimed_username = username
     const { data, error } = await supabase.from('waitlist').update({
       claimed_username: username,
-      referral_id: uuidv4()
+      // referral_id: uuidv4()
     }).eq('claim_id', id).select()
 
     if (error) {

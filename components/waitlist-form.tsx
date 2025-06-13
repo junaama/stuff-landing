@@ -120,6 +120,7 @@ export function WaitlistForm({ ref }: { ref?: string }) {
             email: formData.email,
             phone_number: phone,
             claim_id: uuidv4(),
+            referral_id: uuidv4(),
             referred_by: ref
           },
         ])
