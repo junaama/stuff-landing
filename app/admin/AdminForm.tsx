@@ -26,8 +26,8 @@ export default function AdminForm() {
         const newComponent: EmailComponent = {
             id: Date.now(),
             type,
-            content: type === 'text' ? 'Start writing your text here...' : type==='image'? 'N/A' : 'Button Text',
-            link: type==='image' ? 'N/A' : 'https://',
+            content: type === 'text' ? 'Start writing your text here...' : type === 'image' ? 'N/A' : 'Button Text',
+            link: type === 'image' ? 'N/A' : 'https://',
         };
         setComponents([...components, newComponent]);
     };
@@ -57,7 +57,7 @@ export default function AdminForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('Sending emails...');
-        if(sendTestUser){
+        if (sendTestUser) {
             setStatus('Sending to test user email')
             const response = await fetch('/api/admin/send-emails', {
                 method: 'POST',
@@ -74,23 +74,23 @@ export default function AdminForm() {
             const data = await response.json();
             setStatus(data.message);
         } else {
-        const response = await fetch('/api/admin/send-emails', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                subject,
-                imageUrl,
-                components, // Send the array of components
-                targetGroup,
-                timeFilter,
-                sendTestUser: false
-                
-            }),
-        });
+            const response = await fetch('/api/admin/send-emails', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subject,
+                    imageUrl,
+                    components, // Send the array of components
+                    targetGroup,
+                    timeFilter,
+                    sendTestUser: false
 
-        const data = await response.json();
-        setStatus(data.message);
-    }
+                }),
+            });
+
+            const data = await response.json();
+            setStatus(data.message);
+        }
     };
 
     const handleLoadTemplate = async (filename: string) => {
@@ -207,23 +207,23 @@ export default function AdminForm() {
                     </select>
                 </label>
 
-                 {/* NEW TIME FILTER DROPDOWN */}
-              <div>
-                <label htmlFor="timeFilter" style={{display: 'block', marginBottom: '5px'}}>Joined:</label>
-                <select 
-                  id="timeFilter"
-                  value={timeFilter} 
-                  onChange={(e) => setTimeFilter(e.target.value)} 
-                  style={{ width: '100%', padding: '8px' }}
-                >
-                  <option value="any">Any time</option>
-                  <option value="1">More than 1 day ago</option>
-                  <option value="3">More than 3 days ago</option>
-                  <option value="7">More than 7 days ago</option>
-                  <option value="30">More than 30 days ago</option>
-                  <option value="90">More than 90 days ago</option>
-                </select>
-              </div>
+                {/* NEW TIME FILTER DROPDOWN */}
+                <div>
+                    <label htmlFor="timeFilter" style={{ display: 'block', marginBottom: '5px' }}>Joined:</label>
+                    <select
+                        id="timeFilter"
+                        value={timeFilter}
+                        onChange={(e) => setTimeFilter(e.target.value)}
+                        style={{ width: '100%', padding: '8px' }}
+                    >
+                        <option value="any">Any time</option>
+                        <option value="1">More than 1 day ago</option>
+                        <option value="3">More than 3 days ago</option>
+                        <option value="7">More than 7 days ago</option>
+                        <option value="30">More than 30 days ago</option>
+                        <option value="90">More than 90 days ago</option>
+                    </select>
+                </div>
 
                 {/* General Settings */}
                 <fieldset style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '5px' }}>
@@ -256,7 +256,7 @@ export default function AdminForm() {
                                     </div>
                                 </>
                             ) : comp.type === 'image' ? (<></>) : comp.type === 'link' ? (<>
-                            
+
                             </>) : (
                                 <div style={{ marginTop: '5px' }}>
                                     <input
@@ -286,7 +286,7 @@ export default function AdminForm() {
                     <button type="button" onClick={() => addComponent('button')}>+ Add Button</button>
                     <button type="button" onClick={() => addPresetButton('claim')}>+ Add "Claim Username" Button</button>
                     <button type="button" onClick={() => addPresetButton('referral')}>+ Add "Referral" Link</button>
-                    <button type="button" onClick={()=>addComponent('image')}>+ Add Founders Gif</button>
+                    <button type="button" onClick={() => addComponent('image')}>+ Add Founders Gif</button>
                 </div>
                 <label htmlFor="sendTestUser">Send Test Emails (Eunice & Naama)</label>
                 <input type="checkbox" onChange={(e) => setSendTestUser(e.target.checked)} checked={sendTestUser} />
@@ -294,7 +294,7 @@ export default function AdminForm() {
             </form>
             {status && <p style={{ marginTop: '20px' }}>{status}</p>}
             <h2>Email Preview</h2>
-            <hr/>
+            <hr />
             <AdminBroadcastEmail subject={subject} imageUrl={imageUrl} previewText={subject} processedComponents={components} />
         </>
     );
