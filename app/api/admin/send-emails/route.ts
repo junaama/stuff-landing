@@ -18,7 +18,27 @@ type ComponentDefinition = {
   preset?: 'claim' | 'referral';
 };
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+function generateTextEmail(user:any, components:any) {
+  let text = '';
+  for (const comp of components) {
+    if (comp.type === 'text') {
+      text += comp.content.replace(/{name}/g, user.first_name || 'there') + '\n\n';
+    }
+    if (comp.type === 'button' && comp.preset === 'claim' && user.claim_id) {
+      text += `Claim your username: https://getstuff.city/claim/${user.claim_id}\n\n`;
+    }
+    if (comp.type === 'button' && comp.preset === 'referral' && user.referral_id) {
+      text += `Refer a friend: https://getstuff.city/referral?ref=${user.referral_id}\n\n`;
+    }
+    if (comp.type === 'link' && user.referral_id) {
+      text += `Referral link: https://getstuff.city/referral?ref=${user.referral_id}\n\n`;
+    }
+    // Add more as needed
+  }
+  text += `Unsubscribe: https://getstuff.city/unsubscribe?cid=${user.claim_id || ''}`;
+  return text;
+}
 
 export async function POST(request: Request) {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
@@ -89,12 +109,12 @@ export async function POST(request: Request) {
       claim_id: '40646a63-88e0-417b-8f78-d5267c3d129f',
       referral_id: '2c831572-6db3-4a92-a702-25ed07211002'
     },
-    {
-      email: 'dasuljung@gmail.com',
-      first_name: 'Eunice',
-      claim_id: '9cf0cf18-6738-48d7-b842-4ac08ffe6a0b',
-      referral_id: '04fe3ffe-89ee-43fc-b87a-37d087b37239'
-    }
+    // {
+    //   email: 'dasuljung@gmail.com',
+    //   first_name: 'Eunice',
+    //   claim_id: '9cf0cf18-6738-48d7-b842-4ac08ffe6a0b',
+    //   referral_id: '04fe3ffe-89ee-43fc-b87a-37d087b37239'
+    // }
     ]
     const userList = sendTestUser ? tempUsers : users;
     const totalUsers = userList.length;
@@ -139,7 +159,8 @@ export async function POST(request: Request) {
           previewText: subject,
           processedComponents: processedComponents as any,
           imageUrl
-        })
+        }),
+        text: generateTextEmail(user, processedComponents)
       };
     }); 
     // console.log("emailBatch", totalUsers, emailBatch)
@@ -149,7 +170,6 @@ export async function POST(request: Request) {
     if (batchError) {
       throw new Error(`Failed to send batch emails: ${batchError.message}`);
     }
-
     return NextResponse.json({ 
       message: `Successfully sent emails to ${userList.length} users.`,
       data: {
