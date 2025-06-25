@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     if (!users || users.length === 0) {
       return NextResponse.json({ message: 'No users found.' });
     }
-    console.log("users", users)
+    // console.log("users", users)
 
     const tempUsers = [{
       email: '0naama0@gmail.com',
