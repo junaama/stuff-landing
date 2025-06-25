@@ -109,12 +109,12 @@ export async function POST(request: Request) {
       claim_id: '40646a63-88e0-417b-8f78-d5267c3d129f',
       referral_id: '2c831572-6db3-4a92-a702-25ed07211002'
     },
-    // {
-    //   email: 'dasuljung@gmail.com',
-    //   first_name: 'Eunice',
-    //   claim_id: '9cf0cf18-6738-48d7-b842-4ac08ffe6a0b',
-    //   referral_id: '04fe3ffe-89ee-43fc-b87a-37d087b37239'
-    // }
+    {
+      email: 'dasuljung@gmail.com',
+      first_name: 'Eunice',
+      claim_id: '9cf0cf18-6738-48d7-b842-4ac08ffe6a0b',
+      referral_id: '04fe3ffe-89ee-43fc-b87a-37d087b37239'
+    }
     ]
     const userList = sendTestUser ? tempUsers : users;
     const totalUsers = userList.length;
@@ -163,18 +163,56 @@ export async function POST(request: Request) {
         text: generateTextEmail(user, processedComponents)
       };
     }); 
-    // console.log("emailBatch", totalUsers, emailBatch)
-    // Send all emails in batch
-    const { data, error: batchError } = await resend.batch.send(emailBatch);
 
-    if (batchError) {
-      throw new Error(`Failed to send batch emails: ${batchError.message}`);
+    // --- Batching logic for resend.batch.send ---
+    const BATCH_SIZE = 100;
+    let totalSent = 0;
+    let batchErrors: any[] = [];
+    let batchResults: any[] = [];
+
+    // Helper to sleep for ms milliseconds
+    function sleep(ms: number) {
+      return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    // Split emailBatch into chunks of BATCH_SIZE
+    function chunkArray<T>(arr: T[], size: number): T[][] {
+      const result: T[][] = [];
+      for (let i = 0; i < arr.length; i += size) {
+        result.push(arr.slice(i, i + size));
+      }
+      return result;
+    }
+
+    const batches = chunkArray(emailBatch, BATCH_SIZE);
+
+    for (let i = 0; i < batches.length; i++) {
+      const batch = batches[i];
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const { data, error } = await resend.batch.send(batch);
+        if (error) {
+          batchErrors.push({ batch: i + 1, error: error.message });
+        } else {
+          totalSent += batch.length;
+          batchResults.push({ batch: i + 1, data });
+        }
+      } catch (err: any) {
+        batchErrors.push({ batch: i + 1, error: err.message });
+      }
+      // Wait 4 seconds between batches, except after the last batch
+      if (i < batches.length - 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(4000);
+      }
+    }
+
     return NextResponse.json({ 
-      message: `Successfully sent emails to ${userList.length} users.`,
+      message: `Successfully sent emails to ${totalSent} users in ${batches.length} batch${batches.length > 1 ? 'es' : ''}.`,
       data: {
-        totalSent: userList.length,
-        batchData: data
+        totalSent,
+        batchResults,
+        batchErrors: batchErrors.length > 0 ? batchErrors : undefined
       }
     });
   } catch (error: any) {
