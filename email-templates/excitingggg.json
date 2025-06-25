@@ -1,0 +1,42 @@
+{
+  "subject": "Hot STUFF incoming 👀",
+  "imageUrl": "",
+  "components": [
+    {
+      "id": 1750870089196,
+      "type": "text",
+      "content": "Hi {name},\n\nWe’re writing to let you know that you’ll be able to access STUFF so so soon…\n\nHere’s a sneak peek on how we’re going to be a better facebook marketplace:",
+      "link": "https://"
+    },
+    {
+      "id": 1750870105083,
+      "type": "custom-image",
+      "content": "https://dgkusrjjnjgsimobzczk.supabase.co/storage/v1/object/public/email//test1.gif",
+      "link": "N/A"
+    },
+    {
+      "id": 1750870129130,
+      "type": "text",
+      "content": "We can’t wait for STUFF to be your digital archive of stuff you love, stuff you’re letting go, and stuff that you’re welcoming into your life. ",
+      "link": "https://"
+    },
+    {
+      "id": 1750870137747,
+      "type": "text",
+      "content": "If you’re excited about STUFF, share us with your people! Help us meet the secondhand enthusiasts, local artists, and vintage lovers of New York City. \n\nHere’s your unique referral link:",
+      "link": "https://"
+    },
+    {
+      "id": 1750870141654,
+      "type": "link",
+      "content": "Get Your Referral Link",
+      "preset": "referral"
+    },
+    {
+      "id": 1750870156775,
+      "type": "text",
+      "content": "Can’t wait to see you (and your stuff) soon.",
+      "link": "https://"
+    }
+  ]
+}
